@@ -8,16 +8,16 @@ class TasksController < ApplicationController
 
     
     def show
-      @task = Task.find(params[:id])
+      @task = current_user.tasks.find(params[:id])
     end
     
     def new
-        @task = Task.new
+        @task = current_user.tasks.new
     end
     
     def create
     
-        @task = Task.new(task_params)
+        @task = current_user.tasks.new(task_params)
         
         if @task.save
             flash[:success] = 'Taskが正常に投稿されました'
@@ -30,12 +30,12 @@ class TasksController < ApplicationController
     
     
     def edit
-        @task = Task.find(params[:id])
+        @task = current_user.tasks.find(params[:id])
     
     end
     
     def update
-    @task = Task.find(params[:id])
+    @task = current_user.tasks.find(params[:id])
     
         if @task.update(task_params)
             flash[:success] = 'Taskは正常に更新されました'
@@ -49,7 +49,7 @@ class TasksController < ApplicationController
     
     
     def destroy
-        @task = Task.find(params[:id])
+        @task = current_user.tasks.find(params[:id])
         @task.destroy
         
         flash[:success] = 'Taskは正常に削除されました'
@@ -63,11 +63,5 @@ class TasksController < ApplicationController
         params.require(:task).permit(:content, :status)
     end
     
-    def correct_user
-        @task = current_user.tasks.find_by(id: params[:id])
-        unless @task
-            redirect_to new_task_path
-        end
-    end
     
 end

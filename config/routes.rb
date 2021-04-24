@@ -9,6 +9,6 @@ post 'login', to: 'sessions#create'
 delete 'logout', to: 'sessions#destroy'
 
 get 'signup', to: 'users#new'
-resources :users, only: [:show, :create]
+resources :users, only: [:show]
 
 end
