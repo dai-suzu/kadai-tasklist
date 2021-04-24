@@ -1,7 +1,8 @@
 class TasksController < ApplicationController
     
+    before_action :require_user_logged_in
     def index
-        @task = Task.all
+        @task = current_user.tasks
     end
 
 
@@ -60,6 +61,13 @@ class TasksController < ApplicationController
     
     def task_params
         params.require(:task).permit(:content, :status)
+    end
+    
+    def correct_user
+        @task = current_user.tasks.find_by(id: params[:id])
+        unless @task
+            redirect_to new_task_path
+        end
     end
     
 end
